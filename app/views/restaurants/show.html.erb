@@ -6,22 +6,30 @@
 <div class="container">
       <div class="card my-2 mx-auto" style="width: 80vw;">
         <div class="card-body">
-         <h5 class="card-title"><%= @restaurant.category %></h5>
+         <h5 class="card-title">Category : <%= @restaurant.category %></h5>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><%= @restaurant.address %></li>
           <li class="list-group-item"><%= @restaurant.phone_number %></li>
         </ul>
         <div class="card-body">
-          <%= link_to "Add review", new_restaurant_review_path(@restaurant), class: "btn btn-primary"%>
           <%= link_to "See all restaurants", restaurants_path, class: "btn btn-primary"%>
         </div>
       </div>
       <div class="card my-2 mx-auto" style="width: 80vw;">
-        <ul class="list-group list-group-flush">          <% @restaurant.reviews.each do |review| %>
+        <ul class="list-group list-group-flush">
+          <% @restaurant.reviews.each do |review| %>
             <li class="list-group-item"><%= review.content %></li>
             <li class="list-group-item"><%= review.rating %>/5</li>
-          <% end %>
+            <% end %>
+            <li class="list-group-item">
+               <h4>Share your experience here</h4>
+               <%= simple_form_for [ @restaurant, @restaurant.reviews.build ] do |f| %>
+                  <%= f.input :content %>
+                  <%= f.input :rating, collection: Review::RATINGS %>
+                  <%= f.submit "Submit review", class: "btn btn-primary" %>
+                <% end %>
+            </li>
         </ul>
       </div>
 </div>
